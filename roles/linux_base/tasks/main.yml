@@ -1,0 +1,4 @@
+---
+
+- name: "Updaten van linux servers"
+  hosts: linux_servers
