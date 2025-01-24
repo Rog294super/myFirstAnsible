@@ -1,7 +1,6 @@
 ---
 
 - name: "Create basic setting for Cisco router"
-  become: yes
   hosts: routers
   tasks:
     
