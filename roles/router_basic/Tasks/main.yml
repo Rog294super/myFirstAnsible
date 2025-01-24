@@ -1,0 +1,11 @@
+---
+
+- name: "Create basic setting for Cisco router"
+  become: yes
+  hosts: routers
+  tasks:
+    
+  - name: "Configure hostname from inventory"
+    ios_config:
+      lines:
+        - hostname R1-Amsterdam

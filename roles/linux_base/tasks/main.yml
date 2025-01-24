@@ -2,3 +2,11 @@
 
 - name: "Updaten van linux servers"
   hosts: linux_servers
+  become: yes
+  tasks:
+
+    - name: "Update het linux systeem"
+      apt:
+        name:
+        update_cache: yes
+        cache_valid_time: 3600

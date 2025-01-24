@@ -1,4 +1,10 @@
 [linux_servers]
+
 ansible_hostname=USVR-01 ansible_host=192.168.189.11 ansible_user=ansible
 ansible_hostname=USVR-02 ansible_host=192.168.189.12 ansible_user=ansible
 ansible_hostname_USVR-03 ansible_host=192.168.189.13 ansible_user=ansible
+
+[routers]
+
+ansible_host=192.168.189.131 ansible_user=cisco ansible_ssh_user=cisco 
+ansible_connection=network_cli ansible_network_os=ios ansible_ssh_pass=Cisco 
