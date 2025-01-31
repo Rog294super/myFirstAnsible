@@ -14,7 +14,7 @@
     - name: Copy docker-compose.yml to server
       copy:
         src: docker-compose.yml
-        dest: /home/ansible/
+        dest: /home/ansible/cacti/docker-compose.yml
         mode: '0644'
       notify:
         - run-docker-compose-cacti
