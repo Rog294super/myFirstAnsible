@@ -1,0 +1,22 @@
+---
+- name: Deploy Cacti using Docker Compose
+  become: yes
+  hosts: webservers
+  tasks:
+
+    - name: Create directory for Cacti deployment
+      file:
+        path: /home/ansible/cacti
+        state: directory
+        mode: '0755'
+
+    - name: Copy docker-compose.yml to server
+      copy:
+        src: docker-compose.yml
+        dest: /home/ansible/cacti/docker-compose.yml
+        mode: '0644'
+
+    - name: Run docker-compose to start Cacti
+      docker_compose:
+        project_src: /home/ansible/cacti/
+        state: present
