@@ -24,3 +24,15 @@
       docker_compose:
         project_src: /home/ansible
         state: present
+
+  handlers:
+    - name: apt-get update
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Change hostname
+      hostname:
+        name: "{{ ansible_hostname }}-new"
+      notify:
+        - apt-get update
