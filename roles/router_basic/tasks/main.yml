@@ -3,10 +3,8 @@
 - name: "Create basic setting for Cisco router"
   hosts: routers
   tasks:
-    - block:
-        - name: "Create basic setting for Cisco router"
-          block:
-            - name: "Configure hostname from inventory"
-              ios_config:
-                lines:
-                  - hostname R1-Amsterdam
+    
+    - name: "Configure hostname from inventory"
+      ios_config:
+        lines:
+          - hostname R1-Amsterdam
