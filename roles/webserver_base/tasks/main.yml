@@ -1,0 +1,34 @@
+---
+
+- name: Playbook for Linux webserver 
+  become: true
+  hosts: linux_webservers
+  tasks:
+    - name: Install packages
+      apt:
+        pkg:
+          - vim
+          - ncdu
+        state: present
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+        update_cache: true
+    
+    - name: Install Docker-Compose
+      apt:
+        name: docker-compose
+        state: present
+    
+    - name: Create user 'kaas'
+      user:
+        name: kaas
+        state: present
+        createhome: yes
+        shell: /bin/bash
+    
+    - name: Install unattended-upgrades
+      apt:
+        name: unattended-upgrades
+        state: present
