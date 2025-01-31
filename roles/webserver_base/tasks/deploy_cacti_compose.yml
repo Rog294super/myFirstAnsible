@@ -1,7 +1,7 @@
 ---
 - name: Deploy Cacti using Docker Compose
   become: yes
-  hosts: webservers
+  hosts: linux_webservers
   tasks:
 
     - name: Create directory for Cacti deployment
