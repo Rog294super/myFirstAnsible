@@ -1,34 +1,51 @@
 ---
-
-- name: Playbook for Linux webserver 
+- name: Playbook for Linux webserver
   become: true
   hosts: linux_webservers
+
   tasks:
-    - name: Install packages
+    - name: Install common packages
       apt:
         pkg:
           - vim
           - ncdu
+          - ca-certificates
+          - curl
+          - gnupg
         state: present
+        update_cache: true
+
     - name: Install Docker
       apt:
         name: docker.io
         state: present
-        update_cache: true
-    
+
     - name: Install Docker-Compose
       apt:
         name: docker-compose
         state: present
-    
-    - name: Create user 'kaas'
+
+    - name: Ensure group 'docker' exists
+      group:
+        name: docker
+        state: present
+
+    - name: Create user 'kaas' and add to docker group
       user:
         name: kaas
         state: present
         createhome: yes
         shell: /bin/bash
-    
+        groups: docker
+        append: yes  # Voorkomt overschrijven van bestaande groepen
+
     - name: Install unattended-upgrades
       apt:
         name: unattended-upgrades
         state: present
+
+    - name: Enable unattended-upgrades service
+      systemd:
+        name: unattended-upgrades
+        enabled: yes
+        state: started
