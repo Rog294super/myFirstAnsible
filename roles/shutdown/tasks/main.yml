@@ -1,0 +1,8 @@
+---
+
+- hosts: ap-nodes
+  gather_facts: nodes
+  tasks:
+    - name: shutdown
+      command: /sbin/shutdown -h now
+      sudo: yes
