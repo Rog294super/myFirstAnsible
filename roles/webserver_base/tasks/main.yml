@@ -1,51 +1,26 @@
 ---
-- name: Playbook for Linux webserver
-  become: true
+- name: Deploy Cacti using Docker Compose
+  become: yes
   hosts: linux_webservers
-
   tasks:
-    - name: Install common packages
-      apt:
-        pkg:
-          - vim
-          - ncdu
-          - ca-certificates
-          - curl
-          - gnupg
-        state: present
-        update_cache: true
 
-    - name: Install Docker
-      apt:
-        name: docker.io
-        state: present
-
-    - name: Install Docker-Compose
+    - name: Install Docker Compose (if needed)
       apt:
         name: docker-compose
         state: present
+      notify:
+        - run-docker-compose-cacti
 
-    - name: Ensure group 'docker' exists
-      group:
-        name: docker
+    - name: Copy docker-compose.yml to server
+      copy:
+        src: docker-compose.yml
+        dest: /home/ansible/
+        mode: '0644'
+      notify:
+        - run-docker-compose-cacti
+
+  handlers:
+    - name: run-docker-compose-cacti
+      docker_compose:
+        project_src: /home/ansible/roles/webserver_base/tasks
         state: present
-
-    - name: Create user 'kaas' and add to docker group
-      user:
-        name: kaas
-        state: present
-        createhome: yes
-        shell: /bin/bash
-        groups: docker
-        append: yes  # Voorkomt overschrijven van bestaande groepen
-
-    - name: Install unattended-upgrades
-      apt:
-        name: unattended-upgrades
-        state: present
-
-    - name: Enable unattended-upgrades service
-      systemd:
-        name: unattended-upgrades
-        enabled: yes
-        state: started
