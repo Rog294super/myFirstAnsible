@@ -1,8 +1,9 @@
 ---
 
-- hosts: ap-nodes
+- hosts: linux_llservers
   gather_facts: nodes
   tasks:
-    - name: shutdown
-      command: /sbin/shutdown -h now
-      sudo: yes
+    - block:
+        - name: shutdown
+          command: /sbin/shutdown -h now
+          become: yes
