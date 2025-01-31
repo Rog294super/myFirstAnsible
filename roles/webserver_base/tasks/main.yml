@@ -1,28 +1,47 @@
 ---
-- name: Deploy Cacti using Docker Compose
+- name: Deploy Cacti and manage packages
   become: yes
   hosts: linux_webservers
   tasks:
-
-    - name: Install Docker Compose (if needed)
+    - name: Install packages
+      apt:
+        pkg:
+          - vim
+          - ncdu
+        state: present
+    
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+        update_cache: true
+    
+    - name: Install Docker-Compose
       apt:
         name: docker-compose
         state: present
-      notify:
-        - run-docker-compose-cacti
+    
+    - name: Create user 'kaas'
+      user:
+        name: kaas
+        state: present
+        createhome: yes
+        shell: /bin/bash
+    
+    - name: Install unattended-upgrades
+      apt:
+        name: unattended-upgrades
+        state: present
 
     - name: Copy docker-compose.yml to server
       copy:
         src: docker-compose.yml
-        dest: /home/ansible/cacti/docker-compose.yml
+        dest: /home/ansible/
         mode: '0644'
-      notify:
-        - run-docker-compose-cacti
 
-  handlers:
-    - name: run-docker-compose-cacti
+    - name: Run docker-compose to start Cacti
       docker_compose:
-        project_src: /home/ansible
+        project_src: /home/ansible/
         state: present
 
   handlers:
