@@ -1,9 +1,9 @@
 ---
 
-- hosts: linux_llservers
+- name: "Shutdown all servers"
+  hosts: linux_servers
   gather_facts: nodes
   tasks:
-    - block:
-        - name: shutdown
-          command: /sbin/shutdown -h now
-          become: yes
+    - name: shutdown
+      command: /sbin/shutdown -h now
+      become: yes
